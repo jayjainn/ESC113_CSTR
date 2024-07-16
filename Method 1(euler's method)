@@ -1,0 +1,47 @@
+Method 1
+
+% Reaction Parameters
+F = 1;   % flow rate of feed into the reactor
+V = 1;   % volume of the reactor
+Cain = 1; % concentration of A in the feed
+Cbin = 0; % concentration of B in the feed
+k = 0.5; % rate constant for the reaction
+
+% Initial Conditions
+Ca0 = 1; % initial concentration of A
+Cb0 = 0; % initial concentration of B
+
+% Time range
+t1 = 0; % initial time
+t2 = 10; % final time
+h = 0.1; % step size
+
+% Number of steps
+N =(t2 - t1)/ h;
+
+% Initialize time and concentration arrays
+T = t1:h:t2;
+Ca = zeros(N, 1);
+Cb = zeros(N, 1);
+
+% initial values for euler's method
+Ca(1) = Ca0;
+Cb(1) = Cb0;
+
+% Solution using euler's method
+for i=1:N
+    Ca(i+1) = Ca(i) + h * (F/V * (Cain - Ca(i)) - k * Ca(i));
+    Cb(i+1) = Cb(i) + h * (F/V * (Cbin - Cb(i)) + k * Ca(i));
+
+end
+
+% Plotting the results
+figure(1);
+plot(T, Ca, 'b-', 'LineWidth', 2);
+hold on;
+plot(T, Cb, 'r-', 'LineWidth', 2);
+xlabel('Time');
+ylabel('Concentration');
+legend('A', 'B');
+title('Concentration vs. Time');
+hold off;
