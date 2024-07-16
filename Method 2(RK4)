@@ -1,0 +1,38 @@
+%Method 2
+% Initialize concentration arrays for RK-4
+Ca2 = zeros(N, 1);
+Cb2 = zeros(N, 1);
+
+% initial values for RK-4
+Ca2(1) = Ca0;
+Cb2(1) = Cb0;
+% Solution using Runge-Kutta method
+for i = 1:N
+
+% Updating concentrations using the Runge-Kutta method
+k1a = h * (F/V * (Cain - Ca2(i)) - k * Ca2(i));
+k1b = h * (F/V * (Cbin - Cb2(i)) + k * Ca2(i));
+
+k2a = h * (F/V * (Cain - (Ca2(i)+(k1a/2))) - k * (Ca2(i)+(k1a/2)));
+k2b = h * (F/V * (Cbin - (Cb2(i)+(k1b/2))) + k * (Ca2(i)+(k1a/2)));
+
+k3a = h * (F/V * (Cain - (Ca2(i)+(k2a/2))) - k * (Ca2(i)+(k2a/2)));
+k3b = h * (F/V * (Cbin - (Cb2(i)+(k2b/2))) + k * (Ca2(i)+(k2a/2)));
+
+k4a = h * (F/V * (Cain - (Ca2(i)+k3a)) - k * (Ca2(i)+k3a));
+k4b = h * (F/V * (Cbin - (Cb2(i)+k3b)) + k * (Ca2(i)+k3a));
+
+Ca2(i+1) = Ca2(i) + (k1a + 2*k2a + 2*k3a + k4a) / 6;
+Cb2(i+1) = Cb2(i) + (k1b + 2*k2b + 2*k3b + k4b) / 6;
+end
+
+% Plotting the results for RK-4
+figure(2);
+plot(T, Ca2, 'b-', 'LineWidth', 2);
+hold on;
+plot(T, Cb2, 'r-', 'LineWidth', 2);
+xlabel('Time');
+ylabel('Concentration');
+legend('A', 'B');
+title('Concentration vs. Time');q
+hold off
